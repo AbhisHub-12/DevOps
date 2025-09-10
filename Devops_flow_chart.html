@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Learning Path - Interactive Flowchart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .flowchart {
+            display: grid;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .phase {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .phase:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .phase-1 { border-left-color: #4CAF50; }
+        .phase-2 { border-left-color: #2196F3; }
+        .phase-3 { border-left-color: #FF9800; }
+        .phase-4 { border-left-color: #9C27B0; }
+        .phase-5 { border-left-color: #F44336; }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .phase-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        
+        .phase-1 .phase-number { background: #4CAF50; }
+        .phase-2 .phase-number { background: #2196F3; }
+        .phase-3 .phase-number { background: #FF9800; }
+        .phase-4 .phase-number { background: #9C27B0; }
+        .phase-5 .phase-number { background: #F44336; }
+        
+        .phase-title {
+            flex: 1;
+            font-size: 1.5em;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .topic-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .topic-card:hover {
+            border-color: #667eea;
+            background: #fff;
+            transform: translateX(5px);
+        }
+        
+        .topic-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .playlist-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .playlist-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .playlist-link:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .lang-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
+            font-size: 0.85em;
+        }
+        
+        .arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #667eea;
+            margin: 10px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        
+        @media (max-width: 768px) {
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .phase-title {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 DevOps Learning Path</h1>
+        <p class="subtitle">Advanced Topics with YouTube Playlists (Hindi & English)</p>
+        
+        <div class="flowchart">
+            <!-- Phase 1: Version Control & CI/CD Foundation -->
+            <div class="phase phase-1">
+                <div class="phase-header">
+                    <div class="phase-number">1</div>
+                    <div class="phase-title">Version Control & CI/CD Foundation</div>
+                </div>
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-name">📚 Git Advanced</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PL9gnSGHSqcnoqBXdMwUTRod4Gi3eac2Ak" target="_blank" class="playlist-link">
+                                Apna College <span class="lang-badge">Hindi</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLu0W_9lII9agwhy658ZPA0MTStKUJTWPi" target="_blank" class="playlist-link">
+                                CodeWithHarry <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">⚡ GitHub Actions</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PL9gnSGHSqcnr2mFqPqJFHqPFVDgDRnP_2" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=R8_veQiYBjI" target="_blank" class="playlist-link">
+                                TechWorld DevOps <span class="lang-badge">English</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">🔄 CI/CD Pipelines</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLy7NrYWoggjzSIlwxeBbcgfAdYoxCIrM2" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLQbQOmlGYH3sxlq9ugoq1ipNFP7tus5Gd" target="_blank" class="playlist-link">
+                                Abhishek.Veeramalla <span class="lang-badge">Hindi/Eng</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇</div>
+            
+            <!-- Phase 2: Linux & Shell Scripting -->
+            <div class="phase phase-2">
+                <div class="phase-header">
+                    <div class="phase-number">2</div>
+                    <div class="phase-title">Linux Mastery for DevOps</div>
+                </div>
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-name">🐧 Linux Advanced</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PL9ooVrP1hQOH3SvcgkC4Qv2cyCebvs0Ik" target="_blank" class="playlist-link">
+                                edureka! <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLBGx66SQNZ8aPsFDwb79JrS2KQBTIZo10" target="_blank" class="playlist-link">
+                                TrainWithShubham <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">📝 Shell Scripting</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLS1QulWo1RIYmaxcEqw5JhK3b-6rgdWO_" target="_blank" class="playlist-link">
+                                ProgrammingKnowledge <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLVHgQku8Z93414VuUWx8vLkp9Q8Gf1-_P" target="_blank" class="playlist-link">
+                                Technical Guftgu <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇</div>
+            
+            <!-- Phase 3: Containerization & Orchestration -->
+            <div class="phase phase-3">
+                <div class="phase-header">
+                    <div class="phase-number">3</div>
+                    <div class="phase-title">Containerization & Orchestration</div>
+                </div>
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-name">🐳 Docker Deep Dive</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLy7NrYWoggjzfAHlUusx2wuDwfCrmJYcs" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLVHgQku8Z935hrZwx751XdKLpDk2Daexs" target="_blank" class="playlist-link">
+                                Technical Guftgu <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">☸️ Kubernetes Complete</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLy7NrYWoggjziYQIDorlXjTvvwweTYoNC" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLdpzxOOAlwvIKMhk8WhzN1pYoJ1YU8Csa" target="_blank" class="playlist-link">
+                                Abhishek.Veeramalla <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">🌐 Ingress & Networking</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/watch?v=80Ew_fsV4rM" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=VicH6KojwCI" target="_blank" class="playlist-link">
+                                CloudNative <span class="lang-badge">English</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">🔐 Cert Manager</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/watch?v=DvXkD0f-lhY" target="_blank" class="playlist-link">
+                                Viktor Farcic <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=KJHTr8QED7E" target="_blank" class="playlist-link">
+                                That DevOps Guy <span class="lang-badge">English</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇</div>
+            
+            <!-- Phase 4: Observability & Monitoring -->
+            <div class="phase phase-4">
+                <div class="phase-header">
+                    <div class="phase-number">4</div>
+                    <div class="phase-title">Observability & Monitoring</div>
+                </div>
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-name">📊 Prometheus</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLy7NrYWoggjxCF3av5JKwyG7FFF9eLeL4" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLVx1qovxj-akr_3XqQQgpqRyQw4GYuS4h" target="_blank" class="playlist-link">
+                                Knowledge Powerhouse <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">📈 Grafana</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLVx1qovxj-al0Knm1A0eEXfGyd5kCi16p" target="_blank" class="playlist-link">
+                                Knowledge Powerhouse <span class="lang-badge">Hindi</span>
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=9TJx7QTrTyo" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">🔍 Observability Stack</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLy7NrYWoggjxCF3av5JKwyG7FFF9eLeL4" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=7gW5pSM6dlU" target="_blank" class="playlist-link">
+                                AWS Tutorial <span class="lang-badge">English</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇</div>
+            
+            <!-- Phase 5: Advanced DevOps Practices -->
+            <div class="phase phase-5">
+                <div class="phase-header">
+                    <div class="phase-number">5</div>
+                    <div class="phase-title">Advanced DevOps Practices</div>
+                </div>
+                <div class="topics-grid">
+                    <div class="topic-card">
+                        <div class="topic-name">🔧 Jenkins Advanced</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLy7NrYWoggjw_LIiDK1LXdNN82uYuuuiC" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLBGx66SQNZ8YBPHn4sM-YYLnM8W5CN1Z5" target="_blank" class="playlist-link">
+                                TrainWithShubham <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">🏗️ Infrastructure as Code</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/playlist?list=PLy7NrYWoggjzD-wQEhL8F2rMlmOaOFSFX" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLdpzxOOAlwvI5n_36NkSGZPnXOMCygAJy" target="_blank" class="playlist-link">
+                                Abhishek.Veeramalla <span class="lang-badge">Hindi</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="topic-card">
+                        <div class="topic-name">🔄 GitOps</div>
+                        <div class="playlist-links">
+                            <a href="https://www.youtube.com/watch?v=MeU5_k9ssrs" target="_blank" class="playlist-link">
+                                TechWorld Nana <span class="lang-badge">English</span>
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=4BibQ69MD8c" target="_blank" class="playlist-link">
+                                GitLab <span class="lang-badge">English</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>Foundation</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2196F3;"></div>
+                <span>Core Skills</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF9800;"></div>
+                <span>Container Tech</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #9C27B0;"></div>
+                <span>Monitoring</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #F44336;"></div>
+                <span>Advanced</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
