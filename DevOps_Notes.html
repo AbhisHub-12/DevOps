@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Complete Learning Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --code-bg: #1e1e1e;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 2rem;
+            padding: 2rem;
+        }
+        
+        .sidebar {
+            width: 280px;
+            position: sticky;
+            top: 140px;
+            height: fit-content;
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .toc {
+            list-style: none;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: var(--dark);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .toc a:hover {
+            background: var(--light);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .toc a.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .content {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 160px;
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .section h3 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+        }
+        
+        .section h4 {
+            color: var(--dark);
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        .command-box {
+            background: var(--code-bg);
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .command-box::before {
+            content: 'BASH';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: #666;
+            background: #333;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        
+        .yaml-box {
+            background: var(--code-bg);
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .yaml-box::before {
+            content: 'YAML';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: #666;
+            background: #333;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: var(--primary);
+        }
+        
+        .tip {
+            background: #e6f7ff;
+            border-left: 4px solid #1890ff;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .tip::before {
+            content: '💡 TIP: ';
+            font-weight: bold;
+            color: #1890ff;
+        }
+        
+        .warning {
+            background: #fff7e6;
+            border-left: 4px solid #fa8c16;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .warning::before {
+            content: '⚠️ WARNING: ';
+            font-weight: bold;
+            color: #fa8c16;
+        }
+        
+        .best-practice {
+            background: #f0f9ff;
+            border: 2px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        
+        .best-practice::before {
+            content: '✅ BEST PRACTICE';
+            display: block;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:hover {
+            background: var(--light);
+        }
+        
+        .command-table {
+            margin: 1rem 0;
+        }
+        
+        .button-group {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .fab {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .fab:hover {
+            transform: scale(1.1);
+        }
+        
+        .search-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .search-box.active {
+            display: block;
+        }
+        
+        .search-box input {
+            padding: 10px 15px;
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            width: 300px;
+            font-size: 1rem;
+        }
+        
+        @media print {
+            .sidebar, .button-group, .header {
+                display: none;
+            }
+            .container {
+                display: block;
+            }
+            .content {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 DevOps Complete Learning Guide</h1>
+        <p>Advanced Topics with Practical Examples</p>
+    </div>
+    
+    <div class="container">
+        <nav class="sidebar">
+            <h3>📚 Table of Contents</h3>
+            <ul class="toc">
+                <li><a href="#git-advanced">Git & GitHub Advanced</a></li>
+                <li><a href="#github-actions">GitHub Actions</a></li>
+                <li><a href="#linux">Linux for DevOps</a></li>
+                <li><a href="#cicd">CI/CD Pipelines</a></li>
+                <li><a href="#docker">Docker Deep Dive</a></li>
+                <li><a href="#kubernetes">Kubernetes</a></li>
+                <li><a href="#ingress">Ingress & Cert Manager</a></li>
+                <li><a href="#observability">Observability</a></li>
+            </ul>
+        </nav>
+        
+        <main class="content">
+            <!-- Git Advanced Section -->
+            <section id="git-advanced" class="section">
+                <h2>1. Git & GitHub Advanced</h2>
+                
+                <h3>Git Internals & Advanced Commands</h3>
+                
+                <div class="command-box">
+# Understanding Git Objects
+git cat-file -p HEAD              # Print object content
+git ls-tree HEAD                  # List tree object
+git rev-parse HEAD                 # Get SHA of HEAD
+git reflog                        # Reference log of all changes
+                </div>
+                
+                <h4>Interactive Rebase</h4>
+                <div class="tip">
+                    Interactive rebase is powerful for cleaning up commit history before pushing to remote.
+                </div>
+                
+                <div class="command-box">
+# Squash last 3 commits
+git rebase -i HEAD~3
+
+# In the editor, you'll see:
+# pick abc1234 First commit
+# pick def5678 Second commit  
+# pick ghi9012 Third commit
+
+# Change to:
+# pick abc1234 First commit
+# squash def5678 Second commit
+# squash ghi9012 Third commit
+                </div>
+                
+                <h4>Git Stash Advanced</h4>
+                <table class="command-table">
+                    <tr>
+                        <th>Command</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>git stash save "message"</code></td>
+                        <td>Stash with descriptive message</td>
+                    </tr>
+                    <tr>
+                        <td><code>git stash list</code></td>
+                        <td>List all stashes</td>
+                    </tr>
+                    <tr>
+                        <td><code>git stash apply stash@{2}</code></td>
+                        <td>Apply specific stash</td>
+                    </tr>
+                    <tr>
+                        <td><code>git stash branch new-branch</code></td>
+                        <td>Create branch from stash</td>
+                    </tr>
+                    <tr>
+                        <td><code>git stash show -p stash@{0}</code></td>
+                        <td>Show stash content</td>
+                    </tr>
+                </table>
+                
+                <h4>Git Hooks Example</h4>
+                <div class="best-practice">
+                    Use Git hooks to enforce code quality and standards before commits.
+                </div>
+                
+                <div class="command-box">
+#!/bin/sh
+# .git/hooks/pre-commit
+# Make it executable: chmod +x .git/hooks/pre-commit
+
+# Run tests before commit
+npm test || exit 1
+
+# Check for console.log statements
+if grep -r "console.log" --include="*.js" .; then
+    echo "Remove console.log statements before committing"
+    exit 1
+fi
+
+# Run linter
+npm run lint || exit 1
+
+echo "Pre-commit checks passed!"
+                </div>
+            </section>
+            
+            <!-- GitHub Actions Section -->
+            <section id="github-actions" class="section">
+                <h2>2. GitHub Actions</h2>
+                
+                <h3>Complete CI/CD Workflow</h3>
+                
+                <div class="yaml-box">
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '16'
+  DOCKER_REGISTRY: ghcr.io
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/
+                </div>
+                
+                <h3>Matrix Strategy</h3>
+                <div class="tip">
+                    Use matrix strategies to test across multiple versions and platforms simultaneously.
+                </div>
+                
+                <div class="yaml-box">
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [14, 16, 18]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm test
+                </div>
+            </section>
+            
+            <!-- Linux Section -->
+            <section id="linux" class="section">
+                <h2>3. Linux for DevOps</h2>
+                
+                <h3>Essential System Commands</h3>
+                
+                <table class="command-table">
+                    <tr>
+                        <th>Category</th>
+                        <th>Command</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">System Info</td>
+                        <td><code>uname -a</code></td>
+                        <td>All system information</td>
+                    </tr>
+                    <tr>
+                        <td><code>df -h</code></td>
+                        <td>Disk usage human readable</td>
+                    </tr>
+                    <tr>
+                        <td><code>free -h</code></td>
+                        <td>Memory usage</td>
+                    </tr>
+                    <tr>
+                        <td><code>top / htop</code></td>
+                        <td>Process monitoring</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">Network</td>
+                        <td><code>ss -tulpn</code></td>
+                        <td>Show listening ports</td>
+                    </tr>
+                    <tr>
+                        <td><code>ip addr show</code></td>
+                        <td>Show IP addresses</td>
+                    </tr>
+                    <tr>
+                        <td><code>curl -I URL</code></td>
+                        <td>Get HTTP headers</td>
+                    </tr>
+                    <tr>
+                        <td><code>dig domain.com</code></td>
+                        <td>DNS lookup</td>
+                    </tr>
+                </table>
+                
+                <h3>Service Management (systemd)</h3>
+                
+                <div class="command-box">
+# Service control
+systemctl start nginx
+systemctl stop nginx
+systemctl restart nginx
+systemctl reload nginx
+systemctl enable nginx    # Enable at boot
+systemctl disable nginx   # Disable at boot
+systemctl status nginx
+
+# View logs
+journalctl -u nginx -f    # Follow logs
+journalctl -u nginx --since "1 hour ago"
+journalctl -p err         # Error logs only
+                </div>
+                
+                <h3>Creating a Custom Service</h3>
+                <div class="best-practice">
+                    Always create custom systemd services for production applications to ensure proper lifecycle management.
+                </div>
+                
+                <div class="command-box">
+# /etc/systemd/system/myapp.service
+[Unit]
+Description=My Application
+After=network.target
+
+[Service]
+Type=simple
+User=appuser
+WorkingDirectory=/opt/myapp
+ExecStart=/usr/bin/node app.js
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=myapp
+
+[Install]
+WantedBy=multi-user.target
+
+# Reload and start
+systemctl daemon-reload
+systemctl start myapp
+systemctl enable myapp
+                </div>
+            </section>
+            
+            <!-- Docker Section -->
+            <section id="docker" class="section">
+                <h2>4. Docker Deep Dive</h2>
+                
+                <h3>Multi-Stage Dockerfile</h3>
+                <div class="best-practice">
+                    Multi-stage builds reduce image size by separating build dependencies from runtime.
+                </div>
+                
+                <div class="yaml-box">
+# Build stage
+FROM node:16-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Development dependencies
+FROM node:16-alpine AS dev-deps
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+# Build application
+FROM dev-deps AS build
+COPY . .
+RUN npm run build
+
+# Production stage
+FROM node:16-alpine AS runtime
+RUN apk add --no-cache tini
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+WORKDIR /app
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=build --chown=nodejs:nodejs /app/dist ./dist
+
+USER nodejs
+EXPOSE 3000
+
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "dist/index.js"]
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node healthcheck.js || exit 1
+                </div>
+                
+                <h3>Docker Commands Reference</h3>
+                
+                <div class="command-box">
+# Container management
+docker run -d \
+  --name myapp \
+  --restart unless-stopped \
+  --memory="512m" \
+  --cpus="0.5" \
+  -p 8080:80 \
+  -v $(pwd)/data:/data:ro \
+  --env-file .env \
+  myimage:latest
+
+# Inspection and debugging
+docker inspect container_id
+docker stats
+docker logs -f --tail 50 container_name
+docker exec -it container_name sh
+
+# Cleanup
+docker system prune -a --volumes
+docker image prune -a
+docker container prune
+docker volume prune
+                </div>
+            </section>
+            
+            <!-- Kubernetes Section -->
+            <section id="kubernetes" class="section">
+                <h2>5. Kubernetes Complete Guide</h2>
+                
+                <h3>Deployment with All Features</h3>
+                
+                <div class="yaml-box">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  labels:
+    app: myapp
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: app
+        image: myapp:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: password
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+      volumes:
+      - name: config
+        configMap:
+          name: app-config
+                </div>
+                
+                <h3>Essential Kubectl Commands</h3>
+                
+                <table class="command-table">
+                    <tr>
+                        <th>Category</th>
+                        <th>Command</th>
+                    </tr>
+                    <tr>
+                        <td>Cluster Info</td>
+                        <td><code>kubectl cluster-info</code></td>
+                    </tr>
+                    <tr>
+                        <td>Get Resources</td>
+                        <td><code>kubectl get pods -o wide --all-namespaces</code></td>
+                    </tr>
+                    <tr>
+                        <td>Describe</td>
+                        <td><code>kubectl describe pod pod-name</code></td>
+                    </tr>
+                    <tr>
+                        <td>Logs</td>
+                        <td><code>kubectl logs -f pod-name --tail=50</code></td>
+                    </tr>
+                    <tr>
+                        <td>Execute</td>
+                        <td><code>kubectl exec -it pod-name -- /bin/bash</code></td>
+                    </tr>
+                    <tr>
+                        <td>Port Forward</td>
+                        <td><code>kubectl port-forward pod-name 8080:80</code></td>
+                    </tr>
+                    <tr>
+                        <td>Scale</td>
+                        <td><code>kubectl scale deployment app --replicas=5</code></td>
+                    </tr>
+                    <tr>
+                        <td>Rollout</td>
+                        <td><code>kubectl rollout status deployment/app</code></td>
+                    </tr>
+                </table>
+            </section>
+            
+            <!-- Ingress Section -->
+            <section id="ingress" class="section">
+                <h2>6. Ingress & Cert Manager</h2>
+                
+                <h3>Complete Ingress Configuration</h3>
+                
+                <div class="yaml-box">
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rate-limit: "10"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - app.example.com
+    secretName: app-tls-secret
+  rules:
+  - host: app.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
+                </div>
+                
+                <h3>Cert Manager Setup</h3>
+                
+                <div class="command-box">
+# Install Cert Manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
+
+# Verify installation
+kubectl get pods --namespace cert-manager
+                </div>
+                
+                <div class="yaml-box">
+# ClusterIssuer for Let's Encrypt
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@example.com
+    privateKeySecretRef:
+      name: letsencrypt-prod-key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+                </div>
+            </section>
+            
+            <!-- Observability Section -->
+            <section id="observability" class="section">
+                <h2>7. Observability Stack</h2>
+                
+                <h3>Prometheus Configuration</h3>
+                
+                <div class="yaml-box">
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+    - role: pod
+    relabel_configs:
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+      action: keep
+      regex: true
+    - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+      action: replace
+      target_label: __metrics_path__
+      regex: (.+)
+                </div>
+                
+                <h3>Useful PromQL Queries</h3>
+                
+                <div class="command-box">
+# CPU Usage
+100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+
+# Memory Usage
+(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
+
+# HTTP Error Rate
+sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))
+
+# Pod Restart Rate
+rate(kube_pod_container_status_restarts_total[15m])
+
+# 95th Percentile Response Time
+histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))
+                </div>
+                
+                <h3>Grafana Dashboard Setup</h3>
+                <div class="tip">
+                    Import dashboard ID 11074 for Kubernetes cluster monitoring or 3662 for Prometheus stats.
+                </div>
+            </section>
+            
+            <!-- Quick Reference Section -->
+            <section id="quick-ref" class="section">
+                <h2>Quick Reference</h2>
+                
+                <div class="warning">
+                    Always test commands in development environment before running in production!
+                </div>
+                
+                <h3>Daily Use Commands</h3>
+                
+                <div class="command-box">
+# Git
+git log --oneline --graph --all -20
+
+# Docker
+docker-compose logs -f --tail=100
+docker system df
+
+# Kubernetes
+kubectl get all -A
+kubectl top pods --all-namespaces
+kubectl rollout restart deployment/app
+
+# Linux
+find /var/log -name "*.log" -mtime +30 -delete
+du -sh * | sort -hr | head -10
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <div class="button-group">
+        <button class="fab" onclick="window.print()" title="Print">🖨️</button>
+        <button class="fab" onclick="window.scrollTo(0,0)" title="Top">⬆️</button>
+    </div>
+    
+    <script>
+        // Add active class to current section in TOC
+        const sections = document.querySelectorAll('.section');
+        const tocLinks = document.querySelectorAll('.toc a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
